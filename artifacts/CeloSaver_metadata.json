@@ -1,0 +1,605 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "goalId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newBalance",
+						"type": "uint256"
+					}
+				],
+				"name": "Deposit",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "goalId",
+						"type": "uint256"
+					}
+				],
+				"name": "GoalClosed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "goalId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "finalAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "GoalCompleted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "goalId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "targetAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "GoalCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "goalId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "remainingBalance",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdrawal",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_goalId",
+						"type": "uint256"
+					}
+				],
+				"name": "closeGoal",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_targetAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_durationInDays",
+						"type": "uint256"
+					}
+				],
+				"name": "createGoal",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_goalId",
+						"type": "uint256"
+					}
+				],
+				"name": "deposit",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_goalId",
+						"type": "uint256"
+					}
+				],
+				"name": "getGoal",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "targetAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "currentAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "deadline",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "isActive",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createdAt",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct CeloSaver.SavingsGoal",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "getGoalCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_goalId",
+						"type": "uint256"
+					}
+				],
+				"name": "getGoalProgress",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "getTotalSavings",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "getUserGoals",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "targetAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "currentAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "deadline",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "isActive",
+								"type": "bool"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createdAt",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct CeloSaver.SavingsGoal[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_goalId",
+						"type": "uint256"
+					}
+				],
+				"name": "isGoalCompleted",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "totalSavings",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "userGoals",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "targetAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isActive",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "createdAt",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_goalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "A DeFi-powered savings platform for financial inclusion on Celo",
+			"kind": "dev",
+			"methods": {
+				"closeGoal(uint256)": {
+					"details": "Close a savings goal and withdraw all funds",
+					"params": {
+						"_goalId": "Index of the goal to close"
+					}
+				},
+				"createGoal(string,uint256,uint256)": {
+					"details": "Create a new savings goal",
+					"params": {
+						"_durationInDays": "Duration to achieve the goal",
+						"_name": "Name of the savings goal",
+						"_targetAmount": "Target amount to save (in wei)"
+					}
+				},
+				"deposit(uint256)": {
+					"details": "Deposit funds into a specific savings goal",
+					"params": {
+						"_goalId": "Index of the goal to deposit into"
+					}
+				},
+				"getGoal(address,uint256)": {
+					"details": "Get a specific goal for a user",
+					"params": {
+						"_goalId": "Index of the goal",
+						"_user": "Address of the user"
+					},
+					"returns": {
+						"_0": "The savings goal"
+					}
+				},
+				"getGoalCount(address)": {
+					"details": "Get the number of goals for a user",
+					"params": {
+						"_user": "Address of the user"
+					},
+					"returns": {
+						"_0": "Number of goals"
+					}
+				},
+				"getGoalProgress(address,uint256)": {
+					"details": "Get progress percentage for a goal",
+					"params": {
+						"_goalId": "Index of the goal",
+						"_user": "Address of the user"
+					},
+					"returns": {
+						"_0": "Progress percentage (0-100)"
+					}
+				},
+				"getTotalSavings(address)": {
+					"details": "Get total savings for a user across all goals",
+					"params": {
+						"_user": "Address of the user"
+					},
+					"returns": {
+						"_0": "Total savings amount"
+					}
+				},
+				"getUserGoals(address)": {
+					"details": "Get all goals for a user",
+					"params": {
+						"_user": "Address of the user"
+					},
+					"returns": {
+						"_0": "Array of savings goals"
+					}
+				},
+				"isGoalCompleted(address,uint256)": {
+					"details": "Check if a goal has reached its target",
+					"params": {
+						"_goalId": "Index of the goal",
+						"_user": "Address of the user"
+					},
+					"returns": {
+						"_0": "True if goal is completed"
+					}
+				},
+				"withdraw(uint256,uint256)": {
+					"details": "Withdraw funds from a specific savings goal",
+					"params": {
+						"_amount": "Amount to withdraw (in wei)",
+						"_goalId": "Index of the goal to withdraw from"
+					}
+				}
+			},
+			"title": "CeloSaver - Micro-Savings Platform",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "Users can create savings goals and track their progress",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"CeloSaver.sol": "CeloSaver"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"CeloSaver.sol": {
+			"keccak256": "0xcb102970dfb96e6187ccac3d343900c1f1c1de5604b8b48eb7a3a47002ddef20",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9470a02ae0c81a010ccef03dc5af6a1d21f32d8c4c14b0bace4c37a7775766f6",
+				"dweb:/ipfs/QmNcVRbiWQNoCSZwgEfJ73b1nZ4zR2kihJBKAeNjx3oW4s"
+			]
+		}
+	},
+	"version": 1
+}
