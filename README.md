@@ -1,7 +1,3 @@
-Sure — here’s your full **English version of the README.md** for your **CeloSaver Smart Contract** project, formatted and ready for GitHub:
-
----
-
 # 🪙 CeloSaver Smart Contract
 
 **CeloSaver** is a **DeFi smart contract** that allows users to create **personal savings goals** and manage their assets in a **decentralized** way on the **Celo blockchain**.
@@ -121,7 +117,3 @@ mapping(address => uint256) public totalSavings;
 ## 🧑‍💻 License
 
 **MIT License** — Free to use, copy, modify, and distribute, provided proper attribution is given.
-
----
-
-Would you like me to include a short code snippet of the main contract (`CeloSaver.sol`) in the README (e.g., for quick reference on GitHub)?
