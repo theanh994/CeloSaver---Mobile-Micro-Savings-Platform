@@ -1,114 +1,127 @@
+Sure — here’s your full **English version of the README.md** for your **CeloSaver Smart Contract** project, formatted and ready for GitHub:
+
+---
+
 # 🪙 CeloSaver Smart Contract
 
-CeloSaver là **hợp đồng thông minh DeFi** giúp người dùng tạo các **mục tiêu tiết kiệm cá nhân** (Savings Goals) và quản lý tài sản một cách **phi tập trung** trên blockchain **Celo**.  
-Người dùng có thể tạo mục tiêu, gửi tiền (CELO), theo dõi tiến trình, và rút tiền bất kỳ lúc nào — hoàn toàn tự chủ, minh bạch và an toàn.
+**CeloSaver** is a **DeFi smart contract** that allows users to create **personal savings goals** and manage their assets in a **decentralized** way on the **Celo blockchain**.
+Users can create goals, deposit CELO, track their progress, and withdraw funds anytime — completely self-custodied, transparent, and secure.
 
 ---
 
-## 📘 Tổng quan
+## 📘 Overview
 
-Hợp đồng thông minh này đóng vai trò là **back-end phi tập trung** cho ứng dụng di động **CeloSaver App**, cho phép:
-- Mọi người có ví Celo đều có thể bắt đầu tiết kiệm.
-- Quản lý và theo dõi tiến trình tiết kiệm trực tiếp trên chuỗi.
-- Hoạt động hoàn toàn bằng tài sản gốc của Celo (CELO) thông qua `msg.value`.
+This smart contract serves as the **decentralized back-end** for the **CeloSaver mobile app**, enabling:
 
----
-
-## ✨ Tính năng chính
-
-| Tính năng | Mô tả |
-|------------|--------|
-| **Tạo mục tiêu** | Người dùng có thể tạo nhiều mục tiêu tiết kiệm với tên, số tiền và thời hạn tùy chỉnh. |
-| **Gửi tiền (deposit)** | Gửi CELO vào mục tiêu đang hoạt động. |
-| **Rút tiền (withdraw)** | Rút một phần tiền từ mục tiêu đã chọn. |
-| **Đóng mục tiêu** | Đóng mục tiêu (hoàn thành hoặc không) và rút toàn bộ số dư còn lại. |
-| **Theo dõi tiến trình** | Xem tổng số tiền tiết kiệm và tiến độ đạt được của từng mục tiêu. |
-| **Sự kiện (Events)** | Hợp đồng phát sự kiện khi người dùng tạo, gửi tiền, rút tiền hoặc hoàn thành mục tiêu. |
+* Anyone with a Celo wallet to start saving.
+* Direct on-chain management and progress tracking.
+* All interactions are made with Celo’s native asset (**CELO**) via `msg.value`.
 
 ---
 
-## 🧱 Cấu trúc hợp đồng
+## ✨ Key Features
+
+| Feature            | Description                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| **Create Goals**   | Users can create multiple savings goals with custom names, target amounts, and deadlines. |
+| **Deposit Funds**  | Deposit CELO into an active savings goal.                                                 |
+| **Withdraw Funds** | Withdraw a portion of funds from a specific goal.                                         |
+| **Close Goals**    | Close a goal (completed or not) and withdraw the remaining balance.                       |
+| **Track Progress** | View total savings and progress toward each goal.                                         |
+| **Events**         | Emits events when goals are created, deposited into, withdrawn from, or completed.        |
+
+---
+
+## 🧱 Contract Structure
 
 ### `struct SavingsGoal`
+
 ```solidity
 struct SavingsGoal {
-    string name;            // Tên mục tiêu
-    uint256 targetAmount;   // Số tiền mục tiêu
-    uint256 currentAmount;  // Số tiền đã tiết kiệm
-    uint256 deadline;       // Hạn cuối (timestamp)
-    bool isActive;          // Trạng thái hoạt động
-    uint256 createdAt;      // Ngày tạo
+    string name;            // Goal name
+    uint256 targetAmount;   // Target amount to save
+    uint256 currentAmount;  // Current amount saved
+    uint256 deadline;       // Deadline (timestamp)
+    bool isActive;          // Goal active status
+    uint256 createdAt;      // Creation timestamp
 }
 ```
 
 ### `mapping`
+
 ```solidity
 mapping(address => SavingsGoal[]) public userGoals;
 mapping(address => uint256) public totalSavings;
 ```
-- `userGoals`: Danh sách tất cả mục tiêu của mỗi người dùng.  
-- `totalSavings`: Tổng số CELO đang tiết kiệm của người dùng trên tất cả mục tiêu.
+
+* `userGoals`: List of all goals created by each user.
+* `totalSavings`: Total CELO saved across all goals for a user.
 
 ---
 
-## ⚙️ Các hàm chính
+## ⚙️ Core Functions
 
-### 🔸 Dành cho người dùng
+### 🔸 User Functions
 
-| Hàm | Mô tả |
-|------|-------|
-| `createGoal(string _name, uint256 _targetAmount, uint256 _durationInDays)` | Tạo một mục tiêu tiết kiệm mới. |
-| `deposit(uint256 _goalId)` *(payable)* | Gửi CELO vào mục tiêu có mã `_goalId`. |
-| `withdraw(uint256 _goalId, uint256 _amount)` | Rút một phần tiền từ mục tiêu. |
-| `closeGoal(uint256 _goalId)` | Đóng mục tiêu và rút toàn bộ số dư còn lại. |
+| Function                                                                   | Description                                        |
+| -------------------------------------------------------------------------- | -------------------------------------------------- |
+| `createGoal(string _name, uint256 _targetAmount, uint256 _durationInDays)` | Create a new savings goal.                         |
+| `deposit(uint256 _goalId)` *(payable)*                                     | Deposit CELO into a specific goal by its ID.       |
+| `withdraw(uint256 _goalId, uint256 _amount)`                               | Withdraw a partial amount from the selected goal.  |
+| `closeGoal(uint256 _goalId)`                                               | Close the goal and withdraw the remaining balance. |
 
-### 🔹 Hàm xem (View)
+### 🔹 View Functions
 
-| Hàm | Mô tả |
-|------|-------|
-| `getUserGoals(address _user)` | Trả về danh sách mục tiêu của người dùng. |
-| `getGoal(address _user, uint256 _goalId)` | Lấy thông tin chi tiết của mục tiêu. |
-| `getGoalCount(address _user)` | Trả về số lượng mục tiêu hiện có. |
-| `getTotalSavings(address _user)` | Tổng số CELO đang tiết kiệm. |
-| `isGoalCompleted(address _user, uint256 _goalId)` | Kiểm tra xem mục tiêu đã hoàn thành chưa. |
-| `getGoalProgress(address _user, uint256 _goalId)` | Tính phần trăm tiến trình hoàn thành (0–100%). |
-
----
-
-## 🚀 Triển khai & Kiểm thử
-
-### Yêu cầu
-- **Solidity:** `^0.8.19`  
-- **Môi trường:** Remix / Hardhat / Truffle  
-- **Mạng:** Celo Mainnet hoặc Alfajores Testnet  
-
-### Các bước triển khai
-1. Biên dịch hợp đồng bằng Solidity Compiler (`^0.8.19`).
-2. Triển khai lên Celo Testnet (ví dụ: **Alfajores**).
-3. Gọi `createGoal` để tạo mục tiêu tiết kiệm.
-4. Gọi `deposit` kèm giá trị CELO để nạp tiền vào mục tiêu.
-5. Sử dụng các hàm `getGoal` hoặc `getGoalProgress` để theo dõi tiến trình.
+| Function                                          | Description                                         |
+| ------------------------------------------------- | --------------------------------------------------- |
+| `getUserGoals(address _user)`                     | Returns all goals for a specific user.              |
+| `getGoal(address _user, uint256 _goalId)`         | Returns detailed information about a specific goal. |
+| `getGoalCount(address _user)`                     | Returns the total number of goals for a user.       |
+| `getTotalSavings(address _user)`                  | Returns the total CELO saved by a user.             |
+| `isGoalCompleted(address _user, uint256 _goalId)` | Checks if a goal has been completed.                |
+| `getGoalProgress(address _user, uint256 _goalId)` | Calculates completion progress percentage (0–100%). |
 
 ---
 
-## 🔮 Kế hoạch phát triển tương lai
+## 🚀 Deployment & Testing
 
-| Hướng mở rộng | Mô tả |
-|----------------|--------|
-| **Hỗ trợ Stablecoin (ERC20)** | Thêm hỗ trợ cUSD, cREAL để giảm rủi ro biến động giá. |
-| **Sinh lãi tự động** | Tích hợp các giao thức DeFi trên Celo như Mento để sinh lợi từ số tiền tiết kiệm. |
-| **Dashboard thống kê** | Giao diện trực quan hóa tiến trình tiết kiệm và phần thưởng. |
+### Requirements
+
+* **Solidity:** `^0.8.19`
+* **Environment:** Remix / Hardhat / Truffle
+* **Network:** Celo Mainnet or Alfajores Testnet
+
+### Deployment Steps
+
+1. Compile the contract using the Solidity compiler (`^0.8.19`).
+2. Deploy to a Celo network (e.g., **Alfajores Testnet**).
+3. Call `createGoal` to create a new savings goal.
+4. Call `deposit` with CELO value to add funds to your goal.
+5. Use `getGoal` or `getGoalProgress` to monitor your progress.
 
 ---
 
-## ⚠️ Tuyên bố miễn trừ trách nhiệm
+## 🔮 Future Roadmap
 
-> Mã nguồn này được cung cấp cho mục đích **trình diễn**.  
-> Hợp đồng **chưa được kiểm toán bảo mật**, **không nên sử dụng trong môi trường sản xuất** cho đến khi được đánh giá bởi tổ chức audit chuyên nghiệp.
+| Feature                        | Description                                                            |
+| ------------------------------ | ---------------------------------------------------------------------- |
+| **Stablecoin Support (ERC20)** | Add support for cUSD, cREAL to reduce price volatility.                |
+| **Auto-Yield Integration**     | Integrate with Celo DeFi protocols such as Mento to generate interest. |
+| **Analytics Dashboard**        | Build a visual dashboard for tracking progress and rewards.            |
 
 ---
 
-## 🧑‍💻 Giấy phép
+## ⚠️ Disclaimer
 
-**MIT License** — Tự do sử dụng, sao chép, chỉnh sửa và phân phối với điều kiện ghi rõ nguồn.
+> This source code is provided for **demonstration purposes only**.
+> The smart contract **has not been audited** and **should not be used in production** until it has been professionally security-audited.
 
+---
+
+## 🧑‍💻 License
+
+**MIT License** — Free to use, copy, modify, and distribute, provided proper attribution is given.
+
+---
+
+Would you like me to include a short code snippet of the main contract (`CeloSaver.sol`) in the README (e.g., for quick reference on GitHub)?
